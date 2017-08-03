@@ -5,11 +5,11 @@
 \title{Get Shot Chart Data}
 \usage{
 get_shotchart(SeasonType = "", LeagueID = "", Season = "",
-  IsOnlyCurrentSeason = "", PlayerID = "", TeamID = "", GameID = "",
-  ContextMeasure = "", PlayerPosition = "", DateFrom = "", DateTo = "",
-  GameSegment = "", LastNGames = "", Location = "", Month = "",
-  OpponentTeamID = "", Outcome = "", SeasonSegment = "",
-  VSConference = "", VSDivision = "", RookieYear = "", Period = "")
+  PlayerID = "", TeamID = "", GameID = "", ContextMeasure = "",
+  PlayerPosition = "", DateFrom = "", DateTo = "", GameSegment = "",
+  LastNGames = "", Location = "", Month = "", OpponentTeamID = "",
+  Outcome = "", SeasonSegment = "", VSConference = "", VSDivision = "",
+  RookieYear = "", Period = "")
 }
 \value{
 A data.frame containing shot chart data.
