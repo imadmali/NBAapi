@@ -64,3 +64,46 @@ get_shotchart <- function(SeasonType = "",
   names(out) <- header
   return(out)
 }
+
+
+#' Get Play-by-Play Data (V2)
+#' @param GameID Game identifier.
+#' @param StartPeriod TBD.
+#' @param EndPeriod TBD.
+#' @param ... Arguments to code{\link[nba]{make_url}}.
+#' @return A data frame containing detailed play-by-play information for a single game.
+#' @export
+
+get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
+                     ...) {
+
+  url_str <- make_url(datatype = "playbyplayv2",
+                      GameID = GameID,
+                      StartPeriod = StartPeriod,
+                      EndPeriod = EndPeriod, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game)
+}
+
+#' Get Play-by-Play Data
+#' @param GameID Game identifier.
+#' @param StartPeriod TBD.
+#' @param EndPeriod TBD.
+#' @param ... Arguments to code{\link[nba]{make_url}}.
+#' @return A data frame containing basic play-by-play information for a single game.
+#' @export
+
+get_pbp <- function(GameID = "", StartPeriod = "", EndPeriod = "",
+                     ...) {
+
+  url_str <- make_url(datatype = "playbyplay",
+                      GameID = GameID,
+                      StartPeriod = StartPeriod,
+                      EndPeriod = EndPeriod, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game)
+}

@@ -11,7 +11,7 @@ make_url(datatype = NULL, SeasonType = NULL, LeagueID = NULL,
   GameSegment = NULL, LastNGames = NULL, Location = NULL, Month = NULL,
   OpponentTeamID = NULL, Outcome = NULL, SeasonSegment = NULL,
   VSConference = NULL, VSDivision = NULL, RookieYear = NULL,
-  Period = NULL)
+  Period = NULL, StartPeriod = NULL, EndPeriod = NULL)
 }
 \arguments{
 \item{datatype}{One of \code{"shotchartdetail"}, ...}
@@ -59,6 +59,10 @@ make_url(datatype = NULL, SeasonType = NULL, LeagueID = NULL,
 \item{RookieYear}{TBD.}
 
 \item{Period}{TBD.}
+
+\item{StartPeriod}{TBD.}
+
+\item{EndPeriod}{TBD.}
 }
 \value{
 NBA API url string.

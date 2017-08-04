@@ -25,6 +25,8 @@
 #' @param VSDivision TBD.
 #' @param RookieYear TBD.
 #' @param Period TBD.
+#' @param StartPeriod TBD.
+#' @param EndPeriod TBD.
 #' @return NBA API url string.
 #'
 #' @export
@@ -51,7 +53,9 @@ make_url <- function(datatype = NULL,
                      VSConference = NULL,
                      VSDivision = NULL,
                      RookieYear = NULL,
-                     Period = NULL) {
+                     Period = NULL,
+                     StartPeriod = NULL,
+                     EndPeriod = NULL) {
   prefix <- paste0("http://stats.nba.com/stats/", datatype, "?")
   info <- list(
     SeasonType = SeasonType,
@@ -75,7 +79,9 @@ make_url <- function(datatype = NULL,
     VSConference = VSConference,
     VSDivision = VSDivision,
     RookieYear = RookieYear,
-    Period = Period
+    Period = Period,
+    StartPeriod = StartPeriod,
+    EndPeriod = EndPeriod
   )
   info_str <- paste0(names(info), "=", unlist(info), sep = "&", collapse = "")
   str_len <- nchar(info_str)
