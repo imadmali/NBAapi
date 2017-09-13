@@ -106,6 +106,12 @@ get_shotchart <- function(SeasonType = "",
 #' @param ... Arguments to code{\link[nba]{make_url}}.
 #' @return A data frame containing detailed play-by-play information for a
 #'   single game.
+#' @examples
+#' # get play-by-play information for game no. 0021300028.
+#' pbp_info <- get_pbp2(GameID = "0021300028",
+#'                      StartPeriod = "1",
+#'                      EndPeriod = "10")
+#'
 #' @export
 
 get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
@@ -128,6 +134,12 @@ get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
 #' @param ... Arguments to code{\link[nba]{make_url}}.
 #' @return A data frame containing basic play-by-play information for a single
 #'   game.
+#' @examples
+#' # get play-by-play information for game no. 0021300028.
+#' pbp_info <- get_pbp(GameID = "0021300028",
+#'                     StartPeriod = "1",
+#'                     EndPeriod = "10")
+#'
 #' @export
 
 get_pbp <- function(GameID = "", StartPeriod = "", EndPeriod = "",

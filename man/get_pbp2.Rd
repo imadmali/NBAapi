@@ -22,3 +22,10 @@ A data frame containing detailed play-by-play information for a
 \description{
 Get Play-by-Play Data (V2)
 }
+\examples{
+# get play-by-play information for game no. 0021300028.
+pbp_info <- get_pbp2(GameID = "0021300028",
+                     StartPeriod = "1",
+                     EndPeriod = "10")
+
+}
