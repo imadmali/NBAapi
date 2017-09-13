@@ -1,8 +1,37 @@
 #' Get Shot Chart Data
 #'
-#' Get shot chart data for a player using the NBA API. See \code{\link[nba]{make_url}} for details on the arguments.
+#' Get shot chart data for a player using the NBA API. See
+#' \code{\link[nba]{make_url}} for details on the parameter arguments.
 #'
 #' @return A data.frame containing shot chart data.
+#'
+#' @examples
+#' # Pull shot chart data for all players in the Cleveland Cavaliers
+#' sc_data <- get_shotchart(
+#'                      SeasonType = "Regular+Season",
+#'                      LeagueID = "00",
+#'                      Season = "2016-17",
+#'                      PlayerID = "0",
+#'                      TeamID = "1610612739",
+#'                      GameID = "",
+#'                      ContextMeasure = "FGA",
+#'                      PlayerPosition = "",
+#'                      DateFrom = "",
+#'                      DateTo = "",
+#'                      GameSegment = "",
+#'                      LastNGames = "0",
+#'                      Location = "",
+#'                      Month = "0",
+#'                      OpponentTeamID = "0",
+#'                      Outcome = "",
+#'                      SeasonSegment = "",
+#'                      VSConference = "",
+#'                      VSDivision = "",
+#'                      RookieYear = "",
+#'                      Period = "0",
+#'                      StartPeriod = "",
+#'                      EndPeriod = "")
+#'
 #' @export
 
 get_shotchart <- function(SeasonType = "",
@@ -25,7 +54,9 @@ get_shotchart <- function(SeasonType = "",
                           VSConference = "",
                           VSDivision = "",
                           RookieYear = "",
-                          Period = "") {
+                          Period = "",
+                          StartPeriod = "",
+                          EndPeriod) {
 
   url_str <- make_url(datatype = "shotchartdetail",
                       SeasonType = SeasonType,
@@ -49,7 +80,9 @@ get_shotchart <- function(SeasonType = "",
                       VSConference = VSConference,
                       VSDivision = VSDivision,
                       RookieYear = RookieYear,
-                      Period = Period)
+                      Period = Period,
+                      StartPeriod = StartPeriod,
+                      EndPeriod = EndPeriod)
 
   raw_game <- rjson::fromJSON(file = url_str)
 
@@ -71,7 +104,8 @@ get_shotchart <- function(SeasonType = "",
 #' @param StartPeriod TBD.
 #' @param EndPeriod TBD.
 #' @param ... Arguments to code{\link[nba]{make_url}}.
-#' @return A data frame containing detailed play-by-play information for a single game.
+#' @return A data frame containing detailed play-by-play information for a
+#'   single game.
 #' @export
 
 get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
@@ -92,7 +126,8 @@ get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
 #' @param StartPeriod TBD.
 #' @param EndPeriod TBD.
 #' @param ... Arguments to code{\link[nba]{make_url}}.
-#' @return A data frame containing basic play-by-play information for a single game.
+#' @return A data frame containing basic play-by-play information for a single
+#'   game.
 #' @export
 
 get_pbp <- function(GameID = "", StartPeriod = "", EndPeriod = "",

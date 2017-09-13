@@ -16,7 +16,8 @@ get_pbp(GameID = "", StartPeriod = "", EndPeriod = "", ...)
 \item{...}{Arguments to code{\link[nba]{make_url}}.}
 }
 \value{
-A data frame containing basic play-by-play information for a single game.
+A data frame containing basic play-by-play information for a single
+  game.
 }
 \description{
 Get Play-by-Play Data

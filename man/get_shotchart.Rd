@@ -9,11 +9,40 @@ get_shotchart(SeasonType = "", LeagueID = "", Season = "",
   PlayerPosition = "", DateFrom = "", DateTo = "", GameSegment = "",
   LastNGames = "", Location = "", Month = "", OpponentTeamID = "",
   Outcome = "", SeasonSegment = "", VSConference = "", VSDivision = "",
-  RookieYear = "", Period = "")
+  RookieYear = "", Period = "", StartPeriod = "", EndPeriod)
 }
 \value{
 A data.frame containing shot chart data.
 }
 \description{
-Get shot chart data for a player using the NBA API. See \code{\link[nba]{make_url}} for details on the arguments.
+Get shot chart data for a player using the NBA API. See
+\code{\link[nba]{make_url}} for details on the parameter arguments.
+}
+\examples{
+# Pull shot chart data for all players in the Cleveland Cavaliers
+sc_data <- get_shotchart(
+                     SeasonType = "Regular+Season",
+                     LeagueID = "00",
+                     Season = "2016-17",
+                     PlayerID = "0",
+                     TeamID = "1610612739",
+                     GameID = "",
+                     ContextMeasure = "FGA",
+                     PlayerPosition = "",
+                     DateFrom = "",
+                     DateTo = "",
+                     GameSegment = "",
+                     LastNGames = "0",
+                     Location = "",
+                     Month = "0",
+                     OpponentTeamID = "0",
+                     Outcome = "",
+                     SeasonSegment = "",
+                     VSConference = "",
+                     VSDivision = "",
+                     RookieYear = "",
+                     Period = "0",
+                     StartPeriod = "",
+                     EndPeriod = "")
+
 }
