@@ -4,7 +4,9 @@ An R package that documents the NBA API and provides functions to pull data from
 To Do:
 
 - [ ] Box Scores
-- [ ] Play by Play
-- [ ] Shot Charts
+- [x] Play by Play
+- [x] Shot Charts
 - [ ] Draft Combine
 - [ ] Player Data
+- [ ] Player/team ID/maps
+- [ ] ...
