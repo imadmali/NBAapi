@@ -17,14 +17,19 @@
 #' @export
 #'
 
-draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), ...) {
-  plot(0, type = "n", xlim = xlim, ylim = ylim,
-       xlab = "x Position (ft)", ylab = "y Position (ft)",
-       xaxs = "i", yaxs = "i", xaxt = "n", yaxt = "n", bty = "n")
+draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, ...) {
+  if (!add) {
+    plot(0, type = "n", xlim = xlim, ylim = ylim,
+         xlab = "x Position (ft)", ylab = "y Position (ft)",
+         xaxs = "i", yaxs = "i", xaxt = "n", yaxt = "n", bty = "n")
+  }
 
-  rect(-300, -100, 300, 500, ...)
+  rect(-300, -100, 300, 500)
   # points(0, 0, cex = 3)
-  circle(0, 0, 7.5)
+  if (add)
+    circle(0, 0, 7.5, border = "#ffa500", ...)
+  else
+    circle(0, 0, 7.5, ...)  # hoop
   # segments(47, 0, 47, 50, ...)
   # rect(-30, -7.5, 30, -8.75, col = "black", ...)
   theta1 <- acos((25 - 35 / 12) / 23.75)
@@ -49,11 +54,15 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), ...) {
 
 #' Raster Half Court
 #'
-#' Construct a spatialPolygonsDataFrame obejct out of a raster layer that
+#' Construct a SpatialPolygonsDataFrame obejct out of a raster layer that
 #' represents the NBA regulation half court.
 #'
 #' @return SpatialPolygonsDataFrame representing the NBA regulation half court
 #'   as a grid of rectangular polygons.
+#'
+#' @examples
+#' # create a half court raster SpatialPolygonsDataFrame object
+#' sp_pol <- half_court_raster()
 #'
 #' @export
 
@@ -70,7 +79,7 @@ half_court_raster <- function() {
 #' Merge Shot Data with Raster Half Court
 #'
 #' Merge the shot chart data with a SpatialPolygonDataFrame representing an NBA
-#' regulation half court. This makes it useful to construct a weigth matrix that
+#' regulation half court. This makes it useful to construct a weight matrix that
 #' can be used in spatial modeling.
 #'
 #' @param shpfile SpatialPolygonsDataFrame returned \code{from half_court_raster}.
@@ -78,6 +87,23 @@ half_court_raster <- function() {
 #'
 #' @return SpatialPolygonsDataFrame object which contains the spatial polygons
 #'   along with additional data from(shot_df) in the data slot.
+#'
+#' @examples
+#' # create a half court raster SpatialPolygonsDataFrame object
+#' sp_pol <- half_court_raster()
+#' # merge shot chart data with the spatial polygon (grid)
+#' sp_pol <- merge_shot_data(sp_pol, nba::shots_cavs)
+#' # plot the result
+#' ## first deal with color
+#' colors <- c("white", "black")
+#' num_cols <- length(unique(sp_pol@data$counts))
+#' plotclr <- colorRampPalette(colors)(num_cols)
+#' breaks <- seq(0, max(max(unique(sp_pol@data$counts), na.rm = TRUE)), length.out = num_cols + 1)
+#' colcode <- plotclr[findInterval(sp_pol@data$counts, vec = sort(unique(sp_pol@data$counts)))]
+#' ## now plot grid
+#' plot(sp_pol, col = colcode, border = "transparent")
+#' ## now plot shots
+#' draw_halfcourt(add = TRUE)
 #'
 #' @export
 
@@ -96,15 +122,4 @@ merge_shot_data <- function(shpfile, shot_df) {
   shpfile@data$counts <- NA
   shpfile@data$counts[as.numeric(names(counts))] <- unname(counts)
   return(shpfile)
-}
-
-#' Plot a Circle
-#'
-#' Helper function for plotting a circle
-
-circle <- function(x, y, r, from=0, to=2*pi, lines=FALSE, ...) {
-  theta <- seq(from, to, length=100)
-  if (lines)
-    lines(x + r * cos(theta), y + r * sin(theta), ...)
-  else polygon(x + r * cos(theta), y + r * sin(theta), ...)
 }

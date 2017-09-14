@@ -4,7 +4,7 @@
 \alias{draw_halfcourt}
 \title{Plot Half Court}
 \usage{
-draw_halfcourt(xlim = c(-300, 300), ylim = c(-100, 500), ...)
+draw_halfcourt(xlim = c(-300, 300), ylim = c(-100, 500), add = FALSE, ...)
 }
 \value{
 Plot of half court

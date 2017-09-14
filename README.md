@@ -1,5 +1,5 @@
 # NBA Data
-An R package that documents the NBA API and provides functions to pull data from online NBA sources.
+An R package that documents the NBA API and provides functions to pull data from [stats.nba.com](http://stats.nba.com).
 
 To Do:
 
@@ -10,6 +10,6 @@ To Do:
 - [x] Player Info (commonallplayers, commonteamroster)
 - [x] Team Info (commonTeamYears)
 - [ ] Player/team ID/maps
-- [ ] Graphics for shot charts
+- [ ] Graphics for shot charts (scatter, hex, heat, raster)
 - [ ] Unit tests
 - [ ] ...

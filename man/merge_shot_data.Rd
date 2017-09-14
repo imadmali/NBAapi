@@ -17,6 +17,24 @@ SpatialPolygonsDataFrame object which contains the spatial polygons
 }
 \description{
 Merge the shot chart data with a SpatialPolygonDataFrame representing an NBA
-regulation half court. This makes it useful to construct a weigth matrix that
+regulation half court. This makes it useful to construct a weight matrix that
 can be used in spatial modeling.
+}
+\examples{
+# create a half court raster SpatialPolygonsDataFrame object
+sp_pol <- half_court_raster()
+# merge shot chart data with the spatial polygon (grid)
+sp_pol <- merge_shot_data(sp_pol, nba::shots_cavs)
+# plot the result
+## first deal with color
+colors <- c("white", "black")
+num_cols <- length(unique(sp_pol@data$counts))
+plotclr <- colorRampPalette(colors)(num_cols)
+breaks <- seq(0, max(max(unique(sp_pol@data$counts), na.rm = TRUE)), length.out = num_cols + 1)
+colcode <- plotclr[findInterval(sp_pol@data$counts, vec = sort(unique(sp_pol@data$counts)))]
+## now plot grid
+plot(sp_pol, col = colcode, border = "transparent")
+## now plot shots
+draw_halfcourt(add = TRUE)
+
 }

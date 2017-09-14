@@ -11,6 +11,11 @@ SpatialPolygonsDataFrame representing the NBA regulation half court
   as a grid of rectangular polygons.
 }
 \description{
-Construct a spatialPolygonsDataFrame obejct out of a raster layer that
+Construct a SpatialPolygonsDataFrame obejct out of a raster layer that
 represents the NBA regulation half court.
+}
+\examples{
+# create a half court raster SpatialPolygonsDataFrame object
+sp_pol <- half_court_raster()
+
 }
