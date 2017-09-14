@@ -56,7 +56,7 @@ get_shotchart <- function(SeasonType = "",
                           RookieYear = "",
                           Period = "",
                           StartPeriod = "",
-                          EndPeriod) {
+                          EndPeriod = "") {
 
   url_str <- make_url(datatype = "shotchartdetail",
                       SeasonType = SeasonType,

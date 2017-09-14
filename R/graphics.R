@@ -47,6 +47,57 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), ...) {
   # circle(5.25, 25, 23.75, -pi / 2 + theta1, pi / 2 - theta1, TRUE, ...)
 }
 
+#' Raster Half Court
+#'
+#' Construct a spatialPolygonsDataFrame obejct out of a raster layer that
+#' represents the NBA regulation half court.
+#'
+#' @return SpatialPolygonsDataFrame representing the NBA regulation half court
+#'   as a grid of rectangular polygons.
+#'
+#' @export
+
+half_court_raster <- function() {
+  rl <- raster::raster(extent(matrix( c(-300, -100, 300, 500), nrow=2)), nrow=100, ncol=100,
+                       crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+  rl[] <- 1:ncell(rl)
+  # convert to spatialPolygonsDataFrame
+  sp_pix <- as(rl, "SpatialPixelsDataFrame")
+  sp_pol <- as(sp_pix, "SpatialPolygonsDataFrame")
+  return(sp_pol)
+}
+
+#' Merge Shot Data with Raster Half Court
+#'
+#' Merge the shot chart data with a SpatialPolygonDataFrame representing an NBA
+#' regulation half court. This makes it useful to construct a weigth matrix that
+#' can be used in spatial modeling.
+#'
+#' @param shpfile SpatialPolygonsDataFrame returned \code{from half_court_raster}.
+#' @param shot_df Data frame object returned from \code{get_shotchart}.
+#'
+#' @return SpatialPolygonsDataFrame object which contains the spatial polygons
+#'   along with additional data from(shot_df) in the data slot.
+#'
+#' @export
+
+merge_shot_data <- function(shpfile, shot_df) {
+  # dat <- dplyr::select(shot_df, "LOC_X", "LOC_Y", "EVENT_TYPE")
+  # dat <- dat[-which(dat$LOC_Y > 500),]
+  shot_coords <- which(names(shot_df) %in% c("LOC_X", "LOC_Y"))
+  spdf <- SpatialPointsDataFrame(coords = shot_df[,shot_coords], data = shot_df,
+                                 proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+  spdf <- spTransform(spdf, proj4string(shpfile))
+  spdf@data$loc <- over(spdf, shpfile)$layer
+
+  # construct counts
+  counts <- table(spdf@data$loc)
+
+  shpfile@data$counts <- NA
+  shpfile@data$counts[as.numeric(names(counts))] <- unname(counts)
+  return(shpfile)
+}
+
 #' Plot a Circle
 #'
 #' Helper function for plotting a circle
