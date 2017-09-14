@@ -9,7 +9,7 @@ get_shotchart(SeasonType = "", LeagueID = "", Season = "",
   PlayerPosition = "", DateFrom = "", DateTo = "", GameSegment = "",
   LastNGames = "", Location = "", Month = "", OpponentTeamID = "",
   Outcome = "", SeasonSegment = "", VSConference = "", VSDivision = "",
-  RookieYear = "", Period = "", StartPeriod = "", EndPeriod)
+  RookieYear = "", Period = "", StartPeriod = "", EndPeriod = "")
 }
 \value{
 A data.frame containing shot chart data.

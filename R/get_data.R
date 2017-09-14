@@ -103,7 +103,7 @@ get_shotchart <- function(SeasonType = "",
 #' @param GameID Game identifier.
 #' @param StartPeriod TBD.
 #' @param EndPeriod TBD.
-#' @param ... Arguments to code{\link[nba]{make_url}}.
+#' @param ... Arguments to {\link[nba]{make_url}}.
 #' @return A data frame containing detailed play-by-play information for a
 #'   single game.
 #' @examples
@@ -131,7 +131,7 @@ get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
 #' @param GameID Game identifier.
 #' @param StartPeriod TBD.
 #' @param EndPeriod TBD.
-#' @param ... Arguments to code{\link[nba]{make_url}}.
+#' @param ... Arguments to {\link[nba]{make_url}}.
 #' @return A data frame containing basic play-by-play information for a single
 #'   game.
 #' @examples
@@ -149,6 +149,149 @@ get_pbp <- function(GameID = "", StartPeriod = "", EndPeriod = "",
                       GameID = GameID,
                       StartPeriod = StartPeriod,
                       EndPeriod = EndPeriod, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game)
+}
+
+#' Get Player Information Data
+#' @param LeagueID Game identifier.
+#' @param Season TBD.
+#' @param IsOnlyCurrentSeason TBD.
+#' @param ... Arguments to {\link[nba]{make_url}}.
+#' @return A data frame containing player information in a given season.
+#' @examples
+#' # get player information for the 2016-17 NBA season
+#' player_information <- get_playerinfo(LeagueID = "00",
+#'                                      Season = "2016-17",
+#'                                      IsOnlyCurrentSeason = "1")
+#'
+#' @export
+
+get_playerinfo <- function(LeagueID = "",
+                           Season = "",
+                           IsOnlyCurrentSeason = "",
+                    ...) {
+
+  url_str <- make_url(datatype = "commonallplayers",
+                      LeagueID = LeagueID,
+                      SeasonType = "",
+                      Season = Season,
+                      IsOnlyCurrentSeason = IsOnlyCurrentSeason,
+                      PlayerID = "",
+                      TeamID = "",
+                      GameID = "",
+                      ContextMeasure = "",
+                      PlayerPosition = "",
+                      DateFrom = "",
+                      DateTo = "",
+                      GameSegment = "",
+                      LastNGames = "",
+                      Location = "",
+                      Month = "",
+                      OpponentTeamID = "",
+                      Outcome = "",
+                      SeasonSegment = "",
+                      VSConference = "",
+                      VSDivision = "",
+                      RookieYear = "",
+                      Period = "",
+                      StartPeriod = "",
+                      EndPeriod = "")
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game)
+}
+
+
+#' Get Team Roster Information
+#' @param TeamID See \code{\link[nba]{make_url}}.
+#' @param Season See \code{\link[nba]{make_url}}.
+#' @param ... Arguments to \code{\link[nba]{make_url}}.
+#' @return A data frame containing player information in a given season.
+#' @examples
+#' # get team roster information for Miami Heat in the 2016-17 NBA season
+#' team_roster <- get_teamroster(TeamID = "1610612748",
+#'                               Season = "2016-17")
+#'
+#' @export
+
+get_teamroster <- function(TeamID = "",
+                           Season = "",
+                           ...) {
+
+  url_str <- make_url(datatype = "commonteamroster",
+                      LeagueID = "",
+                      SeasonType = "",
+                      Season = Season,
+                      IsOnlyCurrentSeason = "",
+                      PlayerID = "",
+                      TeamID = TeamID,
+                      GameID = "",
+                      ContextMeasure = "",
+                      PlayerPosition = "",
+                      DateFrom = "",
+                      DateTo = "",
+                      GameSegment = "",
+                      LastNGames = "",
+                      Location = "",
+                      Month = "",
+                      OpponentTeamID = "",
+                      Outcome = "",
+                      SeasonSegment = "",
+                      VSConference = "",
+                      VSDivision = "",
+                      RookieYear = "",
+                      Period = "",
+                      StartPeriod = "",
+                      EndPeriod = "")
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game)
+}
+
+#' Get Team Year Availability Information
+#' @param LeagueID See \code{\link[nba]{make_url}}.
+#' @param ... Arguments to \code{\link[nba]{make_url}}.
+#' @return A data frame containing player information in a given season.
+#' @examples
+#' # get team information for the NBA
+#' team_roster <- get_teamroster(TeamID = "1610612748",
+#'                               Season = "2016-17")
+#'
+#' @export
+
+get_teaminfo <- function(LeagueID = "",
+                           ...) {
+
+  url_str <- make_url(datatype = "commonteamyears",
+                      LeagueID = LeagueID,
+                      SeasonType = "",
+                      Season = "",
+                      IsOnlyCurrentSeason = "",
+                      PlayerID = "",
+                      TeamID = "",
+                      GameID = "",
+                      ContextMeasure = "",
+                      PlayerPosition = "",
+                      DateFrom = "",
+                      DateTo = "",
+                      GameSegment = "",
+                      LastNGames = "",
+                      Location = "",
+                      Month = "",
+                      OpponentTeamID = "",
+                      Outcome = "",
+                      SeasonSegment = "",
+                      VSConference = "",
+                      VSDivision = "",
+                      RookieYear = "",
+                      Period = "",
+                      StartPeriod = "",
+                      EndPeriod = "")
 
   raw_game <- rjson::fromJSON(file = url_str)
 

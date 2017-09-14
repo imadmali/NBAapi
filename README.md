@@ -7,7 +7,9 @@ To Do:
 - [x] Play by Play (playbyplay, playbyplayv2)
 - [x] Shot Charts (shotchartdetail)
 - [ ] Draft Combine
-- [ ] Player Info (commonallplayers, commonteamroster)
-- [ ] Team Info (commonTeamYears)
+- [x] Player Info (commonallplayers, commonteamroster)
+- [x] Team Info (commonTeamYears)
 - [ ] Player/team ID/maps
+- [ ] Graphics for shot charts
+- [ ] Unit tests
 - [ ] ...

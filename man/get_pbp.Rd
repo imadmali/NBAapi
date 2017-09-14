@@ -13,7 +13,7 @@ get_pbp(GameID = "", StartPeriod = "", EndPeriod = "", ...)
 
 \item{EndPeriod}{TBD.}
 
-\item{...}{Arguments to code{\link[nba]{make_url}}.}
+\item{...}{Arguments to {\link[nba]{make_url}}.}
 }
 \value{
 A data frame containing basic play-by-play information for a single

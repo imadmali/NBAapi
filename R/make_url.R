@@ -83,6 +83,7 @@ make_url <- function(datatype = NULL,
     StartPeriod = StartPeriod,
     EndPeriod = EndPeriod
   )
+
   info_str <- paste0(names(info), "=", unlist(info), sep = "&", collapse = "")
   str_len <- nchar(info_str)
   info_str <- substr(info_str, 1, str_len - 1)
