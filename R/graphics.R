@@ -26,10 +26,7 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, 
 
   rect(-300, -100, 300, 500)
   # points(0, 0, cex = 3)
-  if (add)
-    circle(0, 0, 7.5, border = "#ffa500", ...)
-  else
-    circle(0, 0, 7.5, ...)  # hoop
+  circle(0, 0, 7.5, ...)  # hoop
   # segments(47, 0, 47, 50, ...)
   # rect(-30, -7.5, 30, -8.75, col = "black", ...)
   theta1 <- acos((25 - 35 / 12) / 23.75)
