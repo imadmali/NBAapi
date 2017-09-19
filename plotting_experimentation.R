@@ -100,7 +100,7 @@ ggplot(filter(shots_1516, PLAYER_NAME == "LeBron James"), aes(LOC_X, LOC_Y)) +
 #         legend.position = "bottom") +
 #   ggtitle("Player Shot Accuracy")
 
-dat <- filter(shots_1516, PLAYER_NAME == "LeBron James")
+dat <- filter(shots_1516, PLAYER_NAME == "Stephen Curry")
 hx <- hexbin(dat$LOC_X, dat$LOC_Y, xbins = 30, IDs = TRUE)
 hx
 hex_df <- data.frame(cbind(count = hx@count, cell = hx@cell, LOC_X = hx@xcm, LOC_Y = hx@ycm))
@@ -108,7 +108,7 @@ dat$cell <- hx@cID
 hex_df$count_scaled <- sapply(hex_df$count,
                               function(x){
                                 out <- which(x == sort(unique(hex_df$count)))
-                                return(log(out + 1))
+                                return(log(out))
                                 })
 success_table <- summarise(group_by(dat, cell), success = length(which(EVENT_TYPE == "Made Shot"))/n())
 hex_df <- left_join(hex_df, success_table, by = "cell")
@@ -117,13 +117,13 @@ colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", 
 
 ggplot(hex_df, aes(LOC_X, LOC_Y)) +
   geom_point(shape = 15, alpha = 0.5, aes(color = success, size = hex_df$count_scaled)) +
-  scale_color_gradientn("Success",
+  scale_color_gradientn("Success (FG%)",
                         # colors = viridis::magma(100),
                         colors = colorRampPalette(colorful)(100),
                         limits = c(0, 1),
                         breaks = c(0, 1),
                         labels = c("low", "high"),
-                        guide = guide_colorbar(barwidth = 5, title.position = "top", ticks = FALSE)) +
+                        guide = guide_colorbar(barwidth = 10, barheight = 0.5, title.position = "top", ticks = FALSE)) +
   scale_size_continuous("Frequency", breaks = c(1,3), labels = c("low", "high"),
                         guide = guide_legend(override.aes = list(colour = "#ababa9", alpha = 1), title.position = "top")) +
   theme(panel.background = element_rect(fill = "#f5f5f2", color = "#f5f5f2"),
@@ -138,25 +138,44 @@ ggplot(hex_df, aes(LOC_X, LOC_Y)) +
         legend.position = "bottom",
         legend.title.align = 0.5,
         legend.title = element_text(size = 10)) +
+  xlim(-300, 300) + ylim(-100,500) +
   ggtitle("LeBron James", subtitle = "Player Shot Frequency & Success Rate")
 
-fsp_pol@data$lon <- coordinates(sp_pol)[1,]
-sp_pol@data$lat <- coordinates(sp_pol)[2,]
+# Plot hexagon shot chart
 
-ggplot(data = sp_pol@data) +
-  geom_polygon(aes(x = lon, y = lat, fill = layer)) +
-  theme(panel.background = element_blank(),
-        plot.background = element_blank())
+dat_filt <- filter(shots_cavs,  PLAYER_NAME == "Kyrie Irving", SHOT_ZONE_BASIC != "Restricted Area", LOC_Y <= 500)
 
-us_df <- fortify(sp_pol, region = "layer")
-sp_pol@data$id <- sp_pol@data$layer
-us_df <- plyr::join(us_df, sp_pol@data, by="id")
+hex_grid <- nba:::half_court_hex(cellsize = 20)
+hex_grid <- nba::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
+resized_hexes <- nba:::resize_hexes(hex_grid)
 
-pdf("shotchart_ggplot.pdf", height = 10, width = 10)
-ggplot(us_df) +
-  geom_polygon(aes(x = long, y = lat, fill = counts, group = id)) +
-  scale_fill_gradientn(colors = viridis::magma(100), na.value = "#f5f5f2") +
-  theme(panel.background = element_blank(),
-        plot.background = element_blank())
-dev.off()
+colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", "#f4143b")
 
+resized_hexes@data$id <- as.character(seq(1, nrow(resized_hexes@data)))
+ggplot_df <- fortify(resized_hexes, region = "id")
+ggplot_df <- left_join(ggplot_df, resized_hexes@data, by = "id")
+
+ggplot(ggplot_df, aes(x = long, y = lat, group = id, fill = FGP)) +
+  geom_polygon() +
+  scale_fill_gradientn("Success (FG%)",
+                       # colors = viridis::magma(100),
+                       colors = colorRampPalette(colorful)(10),
+                       limits = c(0, 1),
+                       breaks = c(0, 1),
+                       labels = c("low", "high"),
+                       na.value = "#f5f5f2",
+                       guide = guide_colorbar(barwidth = 10, barheight = 0.5, title.position = "top", ticks = FALSE)) +
+  theme(panel.background = element_rect(fill = "#f5f5f2", color = "#f5f5f2"),
+        plot.background = element_rect(fill = "#f5f5f2", color = "#f5f5f2"),
+        axis.title=element_blank(),
+        axis.text=element_blank(),
+        axis.ticks.length = unit(0, "lines"),
+        panel.grid = element_blank(),
+        title = element_text(color = "black"),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        legend.position = "bottom",
+        legend.title.align = 0.5,
+        legend.title = element_text(size = 10)) +
+  xlim(-300, 300) + ylim(-100,500) +
+  ggtitle("LeBron James", subtitle = "Player Shot Frequency & Success Rate")

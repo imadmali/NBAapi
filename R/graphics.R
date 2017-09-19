@@ -49,6 +49,7 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, 
   # circle(5.25, 25, 23.75, -pi / 2 + theta1, pi / 2 - theta1, TRUE, ...)
 }
 
+# CHANGE THIS TO POINT SAMPLING
 #' Raster Half Court
 #'
 #' Construct a SpatialPolygonsDataFrame obejct out of a raster layer that
@@ -73,7 +74,7 @@ half_court_raster <- function() {
   return(sp_pol)
 }
 
-#' Merge Shot Data with Raster Half Court
+#' Merge Shot Data with Half Court Lattice Shapefile
 #'
 #' Merge the shot chart data with a SpatialPolygonDataFrame representing an NBA
 #' regulation half court. This makes it useful to construct a weight matrix that
@@ -104,19 +105,36 @@ half_court_raster <- function() {
 #'
 #' @export
 
-merge_shot_data <- function(shpfile, shot_df) {
+merge_shot_data <- function(shpfile, shot_df, hex = FALSE) {
   # dat <- dplyr::select(shot_df, "LOC_X", "LOC_Y", "EVENT_TYPE")
   # dat <- dat[-which(dat$LOC_Y > 500),]
   shot_coords <- which(names(shot_df) %in% c("LOC_X", "LOC_Y"))
   spdf <- SpatialPointsDataFrame(coords = shot_df[,shot_coords], data = shot_df,
                                  proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"))
   spdf <- spTransform(spdf, proj4string(shpfile))
-  spdf@data$loc <- over(spdf, shpfile)$layer
+
+  if (hex)
+    spdf@data$loc <- over(spdf, shpfile)
+  else
+    spdf@data$loc <- over(spdf, shpfile)$layer
 
   # construct counts
   counts <- table(spdf@data$loc)
 
-  shpfile@data$counts <- NA
+  if (hex) shpfile <- as(shpfile, "SpatialPolygonsDataFrame")
+
+  shot_info <- group_by(spdf@data, loc) %>%
+    summarise(HIT = sum(EVENT_TYPE == "Made Shot"), N = n()) %>%
+    dplyr::select(loc, HIT, N) %>%
+    arrange(loc)
+  shot_info$FGP <- shot_info$HIT/shot_info$N
+
+  shpfile@data$counts <- shpfile@data$HIT <- shpfile@data$N <- shpfile@data$FGP <- NA
   shpfile@data$counts[as.numeric(names(counts))] <- unname(counts)
+  shpfile@data$HIT[shot_info$loc] <- shot_info$HIT
+  shpfile@data$N[shot_info$loc] <- shot_info$N
+  shpfile@data$FGP[shot_info$loc] <- shot_info$FGP
+
   return(shpfile)
 }
+

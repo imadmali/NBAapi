@@ -9,7 +9,7 @@ To Do:
 - [ ] Draft Combine
 - [x] Player Info (commonallplayers, commonteamroster)
 - [x] Team Info (commonTeamYears)
-- [ ] Player/team ID/maps
-- [ ] Graphics for shot charts (scatter, hex, heat, raster)
+- [ ] Player/team ID/maps and league avg stats
+- [ ] Graphics for shot charts (scatter, hex, heat, lattice)
 - [ ] Unit tests
 - [ ] ...

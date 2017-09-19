@@ -2,9 +2,9 @@
 % Please edit documentation in R/graphics.R
 \name{merge_shot_data}
 \alias{merge_shot_data}
-\title{Merge Shot Data with Raster Half Court}
+\title{Merge Shot Data with Half Court Lattice Shapefile}
 \usage{
-merge_shot_data(shpfile, shot_df)
+merge_shot_data(shpfile, shot_df, hex = FALSE)
 }
 \arguments{
 \item{shpfile}{SpatialPolygonsDataFrame returned \code{from half_court_raster}.}
