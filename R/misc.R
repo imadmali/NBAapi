@@ -1,10 +1,10 @@
 #' Convert an NBA JSON file to a Data Frame
 
-json2df <- function(obj) {
-  header <- obj$resultSets[[1]]$headers
+json2df <- function(obj, index = 1) {
+  header <- obj$resultSets[[index]]$headers
   container <- list()
   for (i in 1:length(header)) {
-    container[[i]] <- sapply(obj$resultSets[[1]]$rowSet, "[[", i)
+    container[[i]] <- sapply(obj$resultSets[[index]]$rowSet, "[[", i)
     container[[i]] <- unlist(lapply(container[[i]], function(x) ifelse(is.null(x), NA, x)))
   }
   out <- do.call("data.frame", args = list(container, stringsAsFactors = FALSE))

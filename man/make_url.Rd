@@ -4,14 +4,14 @@
 \alias{make_url}
 \title{Construct NBA API URL}
 \usage{
-make_url(datatype = NULL, SeasonType = NULL, LeagueID = NULL,
-  Season = NULL, IsOnlyCurrentSeason = NULL, PlayerID = NULL,
-  TeamID = NULL, GameID = NULL, ContextMeasure = NULL,
-  PlayerPosition = NULL, DateFrom = NULL, DateTo = NULL,
-  GameSegment = NULL, LastNGames = NULL, Location = NULL, Month = NULL,
-  OpponentTeamID = NULL, Outcome = NULL, SeasonSegment = NULL,
-  VSConference = NULL, VSDivision = NULL, RookieYear = NULL,
-  Period = NULL, StartPeriod = NULL, EndPeriod = NULL)
+make_url(datatype = NULL, SeasonType = "", LeagueID = "", Season = "",
+  IsOnlyCurrentSeason = "", PlayerID = "", TeamID = "", GameID = "",
+  ContextMeasure = "", PlayerPosition = "", DateFrom = "", DateTo = "",
+  GameSegment = "", LastNGames = "", Location = "", Month = "",
+  OpponentTeamID = "", Outcome = "", SeasonSegment = "",
+  VSConference = "", VSDivision = "", RookieYear = "", Period = "",
+  StartPeriod = "", EndPeriod = "", StartRange = "", EndRange = "",
+  RangeType = "")
 }
 \arguments{
 \item{datatype}{One of \code{"shotchartdetail"}, ...}

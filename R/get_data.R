@@ -297,3 +297,89 @@ get_teaminfo <- function(LeagueID = "",
 
   out <- json2df(raw_game)
 }
+
+#' Get Boxscore Traditional (V2)
+#' @param GameID See \code{\link[nba]{make_url}}.
+#' @param StartPeriod See \code{\link[nba]{make_url}}.
+#' @param EndPeriod See \code{\link[nba]{make_url}}.
+#' @param StartRange See \code{\link[nba]{make_url}}.
+#' @param EndRange See \code{\link[nba]{make_url}}.
+#' @param RangeType See \code{\link[nba]{make_url}}.
+#' @param ... Arguments to \code{\link[nba]{make_url}}.
+#' @return A data frame containing player information in a given season.
+#'
+#' @examples
+#' get_boxscoretraditionalv2(GameID = "0021300028",
+#'                           StartPeriod = "1",
+#'                           EndPeriod = "10",
+#'                           StartRange = "1",
+#'                           EndRange = "10",
+#'                           RangeType = "1")
+#'
+#' @export
+
+get_boxscoretraditionalv2 <- function(GameID = "",
+                                  StartPeriod = "",
+                                  EndPeriod = "",
+                                  StartRange = "",
+                                  EndRange = "",
+                                  RangeType = "", ...) {
+
+  url_str <- make_url(datatype = "boxscoretraditionalv2",
+                      GameID = GameID,
+                      StartPeriod = StartPeriod,
+                      EndPeriod = EndPeriod,
+                      StartRange = StartRange,
+                      EndRange = EndRange,
+                      RangeType = RangeType, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game, index = 1)
+
+  return(out)
+}
+
+
+
+#' Get Boxscore Scoring (V2)
+#' @param GameID See \code{\link[nba]{make_url}}.
+#' @param StartPeriod See \code{\link[nba]{make_url}}.
+#' @param EndPeriod See \code{\link[nba]{make_url}}.
+#' @param StartRange See \code{\link[nba]{make_url}}.
+#' @param EndRange See \code{\link[nba]{make_url}}.
+#' @param RangeType See \code{\link[nba]{make_url}}.
+#' @param ... Arguments to \code{\link[nba]{make_url}}.
+#' @return A data frame containing player information in a given season.
+#'
+#' @examples
+#' get_boxscorescoringv2(GameID = "0021300028",
+#'                       StartPeriod = "1",
+#'                       EndPeriod = "10",
+#'                       StartRange = "1",
+#'                       EndRange = "10",
+#'                       RangeType = "1")
+#'
+#' @export
+
+get_boxscorescoringv2 <- function(GameID = "",
+                         StartPeriod = "",
+                         EndPeriod = "",
+                         StartRange = "",
+                         EndRange = "",
+                         RangeType = "", ...) {
+
+  url_str <- make_url(datatype = "boxscorescoringv2",
+                      GameID = GameID,
+                      StartPeriod = StartPeriod,
+                      EndPeriod = EndPeriod,
+                      StartRange = StartRange,
+                      EndRange = EndRange,
+                      RangeType = RangeType, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- json2df(raw_game, index = 1)
+
+  return(out)
+}

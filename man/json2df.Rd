@@ -4,7 +4,7 @@
 \alias{json2df}
 \title{Convert an NBA JSON file to a Data Frame}
 \usage{
-json2df(obj)
+json2df(obj, index = 1)
 }
 \description{
 Convert an NBA JSON file to a Data Frame

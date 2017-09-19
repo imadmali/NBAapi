@@ -3,7 +3,7 @@ An R package that documents the NBA API and provides functions to pull data from
 
 To Do:
 
-- [ ] Box Scores (boxscoresummaryv2, boxscoretraditionalv2, boxscorescoringv2, boxscoreplayertrackv2, boxscoreusagev2)
+- [x] Box Scores (boxscoretraditionalv2, boxscorescoringv2)
 - [x] Play by Play (playbyplay, playbyplayv2)
 - [x] Shot Charts (shotchartdetail)
 - [ ] Draft Combine
@@ -13,3 +13,5 @@ To Do:
 - [ ] Graphics for shot charts (scatter, hex, heat, lattice)
 - [ ] Unit tests
 - [ ] ...
+
+Details on some of the active endpoints are available [here](https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation).
