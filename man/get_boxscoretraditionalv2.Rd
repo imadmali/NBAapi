@@ -23,7 +23,8 @@ get_boxscoretraditionalv2(GameID = "", StartPeriod = "", EndPeriod = "",
 \item{...}{Arguments to \code{\link[nba]{make_url}}.}
 }
 \value{
-A data frame containing player information in a given season.
+A data frame containing boxscore information (counts) for a given
+  game.
 }
 \description{
 Get Boxscore Traditional (V2)

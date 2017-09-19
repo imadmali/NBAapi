@@ -12,7 +12,7 @@ get_teaminfo(LeagueID = "", ...)
 \item{...}{Arguments to \code{\link[nba]{make_url}}.}
 }
 \value{
-A data frame containing player information in a given season.
+A data frame containing team information in a given season.
 }
 \description{
 Get Team Year Availability Information

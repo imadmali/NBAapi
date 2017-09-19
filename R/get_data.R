@@ -125,6 +125,8 @@ get_pbp2 <- function(GameID = "", StartPeriod = "", EndPeriod = "",
   raw_game <- rjson::fromJSON(file = url_str)
 
   out <- json2df(raw_game)
+
+  return(out)
 }
 
 #' Get Play-by-Play Data
@@ -153,6 +155,8 @@ get_pbp <- function(GameID = "", StartPeriod = "", EndPeriod = "",
   raw_game <- rjson::fromJSON(file = url_str)
 
   out <- json2df(raw_game)
+
+  return(out)
 }
 
 #' Get Player Information Data
@@ -203,6 +207,8 @@ get_playerinfo <- function(LeagueID = "",
   raw_game <- rjson::fromJSON(file = url_str)
 
   out <- json2df(raw_game)
+
+  return(out)
 }
 
 
@@ -251,12 +257,14 @@ get_teamroster <- function(TeamID = "",
   raw_game <- rjson::fromJSON(file = url_str)
 
   out <- json2df(raw_game)
+
+  return(out)
 }
 
 #' Get Team Year Availability Information
 #' @param LeagueID See \code{\link[nba]{make_url}}.
 #' @param ... Arguments to \code{\link[nba]{make_url}}.
-#' @return A data frame containing player information in a given season.
+#' @return A data frame containing team information in a given season.
 #' @examples
 #' # get team information for the NBA
 #' team_roster <- get_teamroster(TeamID = "1610612748",
@@ -296,6 +304,8 @@ get_teaminfo <- function(LeagueID = "",
   raw_game <- rjson::fromJSON(file = url_str)
 
   out <- json2df(raw_game)
+
+  return(out)
 }
 
 #' Get Boxscore Traditional (V2)
@@ -306,7 +316,8 @@ get_teaminfo <- function(LeagueID = "",
 #' @param EndRange See \code{\link[nba]{make_url}}.
 #' @param RangeType See \code{\link[nba]{make_url}}.
 #' @param ... Arguments to \code{\link[nba]{make_url}}.
-#' @return A data frame containing player information in a given season.
+#' @return A data frame containing boxscore information (counts) for a given
+#'   game.
 #'
 #' @examples
 #' get_boxscoretraditionalv2(GameID = "0021300028",
@@ -350,7 +361,8 @@ get_boxscoretraditionalv2 <- function(GameID = "",
 #' @param EndRange See \code{\link[nba]{make_url}}.
 #' @param RangeType See \code{\link[nba]{make_url}}.
 #' @param ... Arguments to \code{\link[nba]{make_url}}.
-#' @return A data frame containing player information in a given season.
+#' @return A data frame containing boxscore information (percentages) for a
+#'   given game.
 #'
 #' @examples
 #' get_boxscorescoringv2(GameID = "0021300028",
