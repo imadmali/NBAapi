@@ -41,3 +41,21 @@ player_ids <- function(Season = "", IsOnlyCurrentSeason = "") {
   return(out)
 }
 
+#' Get Game Identifiers for NBA
+#'
+#' Constructs game IDs for NBA games using the format  \code{paste0("002", year-1, game_number))
+#'
+#' @param year Year the season starts in YYYY format.
+#' @param game_number Game number in the season.
+#'
+#' @examples
+#' game_id("2017", "1")
+#' # check by visiting the url associated with the play-by-play
+#' # of the game https://stats.nba.com/game/0021600001/playbyplay/
+#' @export
+#'
+
+game_id <- function(year = "", game_number = "") {
+  yy <- substr(year, 3, 4)
+  paste0("002", as.numeric(yy) - 1, sprintf("%05d", as.numeric(game_number)))
+}
