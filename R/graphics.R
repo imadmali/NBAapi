@@ -21,7 +21,7 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, 
   if (!add) {
     plot(0, type = "n", xlim = xlim, ylim = ylim,
          xlab = "x Position (ft)", ylab = "y Position (ft)",
-         xaxs = "i", yaxs = "i", xaxt = "n", yaxt = "n", bty = "n")
+         xaxs = "i", yaxs = "i", xaxt = "n", yaxt = "n", bty = "n", ...)
   }
 
   rect(-300, -100, 300, 500)
@@ -43,8 +43,8 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, 
   # circle(5.25, 25, 23.75, 0, pi, TRUE, ...)
   # segments(0, 35 / 12, 5.25 + 23.75 * sin(theta1), 35 / 12, ...)
   # segments(0, 50 - 35/12, 5.25 + 23.75 * sin(theta1), 50 - 35 / 12, ...)
-  rect(-60, -47.5, 60, 142.5, border = "black", ...)  # inner paint
-  rect(-80, -47.5, 80, 142.5, border = "gray", ...)  # outer paint
+  rect(-60, -47.5, 60, 142.5, border = "black")  # inner paint
+  rect(-80, -47.5, 80, 142.5, border = "gray")  # outer paint
 
   # circle(5.25, 25, 23.75, -pi / 2 + theta1, pi / 2 - theta1, TRUE, ...)
 }

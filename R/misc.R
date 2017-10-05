@@ -32,7 +32,7 @@ circle <- function(x, y, r, from=0, to=2*pi, lines=FALSE, ...) {
 half_court_hex <- function(cellsize = 20) {
   rl <- raster::raster(raster::extent(matrix( c(-300, -100, 300, 500), nrow=2)), nrow=100, ncol=100,
                        crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
-  rl[] <- 1:ncell(rl)
+  rl[] <- 1:raster::ncell(rl)
   sp_pol <- as(rl, "SpatialPixelsDataFrame")
   hex_points <- sp::spsample(sp_pol, type = "hexagonal",
                              cellsize = cellsize,
@@ -77,9 +77,19 @@ resize_hexes <- function(hex_grid) {
   hex_origin <- sweep(slot(slot(hex_grid@polygons[[1]], "Polygons")[[1]], "coords"), 2, abs(coords[1,]), `+`)
 
   resized_hexes <- hex_grid
+  # min_val <- min(hex_grid@data$counts, na.rm = TRUE)
+  # max_val <- max(hex_grid@data$counts, na.rm = TRUE)
+  # scaling <- (hex_grid@data$counts - min_val) / (max_val - min_val)
 
-  scaling <- (hex_grid@data$counts - min(hex_grid@data$counts, na.rm = TRUE)) /
-    (max(hex_grid@data$counts, na.rm = TRUE) - min(hex_grid@data$counts, na.rm = TRUE))
+  # scaling <- tanh(hex_grid@data$counts)
+  scaling <- hex_grid@data$counts
+  counts <- na.omit(unique(hex_grid@data$counts))
+  len <- length(counts)
+  replacement <- seq(0.1, 1, length.out = len)
+  for (i in 1:len) {
+    indxs <- which(counts[i] == hex_grid@data$counts)
+    scaling[indxs] <- replacement[i]
+  }
 
   for (i in 1:length(resized_hexes@polygons)) {
     if (!is.na(scaling[i])) {

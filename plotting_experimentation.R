@@ -48,7 +48,7 @@ shots_1516 <- get_shotchart(
   StartPeriod = "",
   EndPeriod = "")
 
-ggplot(filter(shots_1516, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Restricted Area"), aes(LOC_X, LOC_Y)) +
+ggplot(filter(shots_1617, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Restricted Area"), aes(LOC_X, LOC_Y)) +
   stat_density2d(geom = "raster", aes(fill = ..density..), contour = FALSE, interpolate = TRUE, n = 200) +
   scale_fill_gradientn("Frequency", colors = viridis::magma(100),
                        limits = c(0,1.7e-5),
@@ -70,7 +70,7 @@ ggplot(filter(shots_1516, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Res
   ggtitle("Player Shot Frequency", subtitle = "LeBron James")
 
 
-ggplot(filter(shots_1516, PLAYER_NAME == "LeBron James"), aes(LOC_X, LOC_Y)) +
+ggplot(filter(shots_1617, PLAYER_NAME == "LeBron James"), aes(LOC_X, LOC_Y)) +
   geom_point(alpha = 0.7, size = 3, aes(color = EVENT_TYPE), shape=3) +
   scale_color_manual(values=c("#FF6688", "#336688"), name = "") +
   theme(panel.background = element_rect(fill = "#f5f5f2", color = "#f5f5f2"),
@@ -100,7 +100,7 @@ ggplot(filter(shots_1516, PLAYER_NAME == "LeBron James"), aes(LOC_X, LOC_Y)) +
 #         legend.position = "bottom") +
 #   ggtitle("Player Shot Accuracy")
 
-dat <- filter(shots_1516, PLAYER_NAME == "Stephen Curry")
+dat <- filter(shots_1617, PLAYER_NAME == "Stephen Curry")
 hx <- hexbin(dat$LOC_X, dat$LOC_Y, xbins = 30, IDs = TRUE)
 hx
 hex_df <- data.frame(cbind(count = hx@count, cell = hx@cell, LOC_X = hx@xcm, LOC_Y = hx@ycm))
@@ -143,7 +143,7 @@ ggplot(hex_df, aes(LOC_X, LOC_Y)) +
 
 # Plot hexagon shot chart
 
-dat_filt <- filter(shots_cavs,  PLAYER_NAME == "Kyrie Irving", SHOT_ZONE_BASIC != "Restricted Area", LOC_Y <= 500)
+dat_filt <- filter(shots_1617, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Restricted Area", LOC_Y <= 500)
 
 hex_grid <- nba:::half_court_hex(cellsize = 20)
 hex_grid <- nba::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
@@ -179,3 +179,29 @@ ggplot(ggplot_df, aes(x = long, y = lat, group = id, fill = FGP)) +
         legend.title = element_text(size = 10)) +
   xlim(-300, 300) + ylim(-100,500) +
   ggtitle("LeBron James", subtitle = "Player Shot Frequency & Success Rate")
+
+
+### base r
+
+# hexagon maps
+
+dat_filt <- filter(shots_1617, PLAYER_NAME == "Karl-Anthony Towns", LOC_Y <= 500)
+# Construct hexagon shot chart (area/color varying)
+hex_grid <- nba:::half_court_hex(cellsize = 15)
+hex_grid <- nba:::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
+resized_hexes <- nba:::resize_hexes(hex_grid)
+# Plot hexagon shot chart
+breaks <- seq(0, max(hex_grid@data$FGP, na.rm = TRUE), length.out = 10)
+colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", "#f4143b")
+colcode <- colorful[findInterval(resized_hexes@data$FGP, breaks)]
+par(bg = "#f5f5f2")
+draw_halfcourt()
+plot(resized_hexes, col = colcode, border = NA, add = TRUE)
+
+# scatter plot
+par(bg = "#f5f5f2")
+draw_halfcourt()
+points(filter(dat_filt, EVENT_TYPE == "Missed Shot")$LOC_X, filter(dat_filt, EVENT_TYPE == "Missed Shot")$LOC_Y, col = "#33668850", pch = 3)
+points(filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_X, filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_Y, col = "#FF668850", pch = 3)
+
+

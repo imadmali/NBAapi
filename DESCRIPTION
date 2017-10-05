@@ -1,5 +1,5 @@
 Package: nba
-Title: Facilitate access to the NBA API.
+Title: Access the NBA API.
 Version: 1.0
 Authors@R: person("Imad", "Ali", email = "imad.ali@columbia.edu", role = c("aut", "cre"))
 Description: The NBA package provides functions that make it easy for R users to access the NBA API (stats.nba.com). It also provides court plotting functions to facilitate shot chart data visualization.
@@ -7,8 +7,8 @@ Depends:
   R (>= 3.4.0),
   rjson (>= 0.2.15),
   dplyr (>= 0.7.2),
-  sp (>= 1.2.5),
-  raster (>= 2.5.8)
+  ggplot2 (>= 2.2.1),
+  sp (>= 1.2.5)
 Suggests:
     roxygen2,
     testthat (>= 1.0.2)
