@@ -1,4 +1,4 @@
-context("get_data functions")
+context("test 'get_data' functions")
 
 test_that("get_shotchart runs", {
   tmp <- sc_data <- get_shotchart(
