@@ -1,6 +1,7 @@
 library(nba)
+
 sp_pol <- half_court_raster()
-sp_pol <- merge_shot_data(sp_pol, filter(shots_1516, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Restricted Area"))
+sp_pol <- merge_shot_data(sp_pol, filter(shots_1617, PLAYER_NAME == "LeBron James", SHOT_ZONE_BASIC != "Restricted Area"))
 
 # colors <- c("white", "black")
 colors <- c("#b7d2e4", "#ff6688")
@@ -184,7 +185,7 @@ ggplot(ggplot_df, aes(x = long, y = lat, group = id, fill = FGP)) +
 ### base r
 
 # hexagon maps
-
+remove(list = ls())
 dat_filt <- filter(shots_1617, PLAYER_NAME == "Karl-Anthony Towns", LOC_Y <= 500)
 # Construct hexagon shot chart (area/color varying)
 hex_grid <- nba:::half_court_hex(cellsize = 15)
@@ -196,7 +197,73 @@ colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", 
 colcode <- colorful[findInterval(resized_hexes@data$FGP, breaks)]
 par(bg = "#f5f5f2")
 draw_halfcourt()
-plot(resized_hexes, col = colcode, border = NA, add = TRUE)
+plot(hex_grid, col = colcode, border = NA, add = TRUE)
+
+# streamline plotting
+
+plot_hexes <- function(dat, player, ..., variable = "FGP", cellsize = 15, scale = TRUE) {
+  col_breaks <- 7
+  dat_filt <- filter(dat, PLAYER_NAME %in% player, ...)
+  dat_leagueomit <- filter(shots_1617, !PLAYER_NAME %in% player, ...)
+  hex_grid <- nba:::half_court_hex(cellsize = cellsize)
+  hex_grid_league <- hex_grid
+
+  hex_grid <- nba:::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
+  if (variable == "FGPvLeague") {
+    hex_grid_league <- nba:::merge_shot_data(hex_grid_league, dat_leagueomit, hex = TRUE)
+    hex_grid@data$FGPvLeague <- hex_grid@data$FGP - hex_grid_league@data$FGP
+  }
+
+  indx <- which(variable == colnames(hex_grid@data))
+
+  if (variable == "FGPvLeague") {
+    # breaks <- seq(min(hex_grid@data[,indx], na.rm = TRUE), max(hex_grid@data[,indx], na.rm = TRUE), length.out = col_breaks)
+    breaks <- seq(-1, 1, length.out = col_breaks)
+  }
+  else {
+    # breaks <- seq(0, max(hex_grid@data[,indx], na.rm = TRUE), length.out = col_breaks)
+    breaks <- seq(0, 1, length.out = col_breaks)
+  }
+
+  colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", "#f4143b")
+  # colorful_sel <- colorRampPalette(colorful)(col_breaks)
+  colcode <- colorful[findInterval(hex_grid@data[,indx], breaks)]
+
+  # scale (if applicable) and plot
+  if (scale) {
+    resized_hexes <- nba:::resize_hexes(hex_grid)
+    plot(resized_hexes, col = colcode, border = NA, add = TRUE)
+  }
+  else {
+    plot(hex_grid, col = colcode, border = NA, add = TRUE)
+  }
+
+  # include legend
+  nba:::hex_legend(variable = variable, colorful = colorful, scale = scale)
+  # title
+  text(-300, 475, player, pos = 4, cex = 1.5)
+  # subtitle
+  if (variable == "FGP")
+    text(-300, 450, "Shot Frequency and Success Rate", pos = 4, cex = 0.8)
+  else
+    text(-300, 450, "Shot Frequency and Performance Against Average", pos = 4, cex = 0.8)
+}
+
+pdf("tmp.pdf", width = 8, height = 8)
+par(bg = "#f5f5f2")
+draw_halfcourt()
+plot_hexes(shots_1617, player = "Stephen Curry", variable = "FGPvLeague",
+           scale = T, cellsize = 15,
+           LOC_Y <= 500)
+dev.off()
+
+par(bg = "#f5f5f2")
+draw_halfcourt()
+plot_hexes(dat, player = "Stephen Curry", variable = "FGPvLeague",
+           scale = T, col_breaks = 7, cellsize = 15,
+           LOC_Y <= 500)
+
+plot_shotchart <- function() {}
 
 # scatter plot
 par(bg = "#f5f5f2")
@@ -205,3 +272,5 @@ points(filter(dat_filt, EVENT_TYPE == "Missed Shot")$LOC_X, filter(dat_filt, EVE
 points(filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_X, filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_Y, col = "#FF668850", pch = 3)
 
 
+# draw a hexagon
+c(xleft, xbottom, xright, ytop)

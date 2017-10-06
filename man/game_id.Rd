@@ -12,5 +12,7 @@ game_id(year = "", game_number = "")
 \item{game_number}{Game number in the season.}
 }
 \examples{
-
+game_id("2017", "1")
+# check by visiting the url associated with the play-by-play
+# of the game https://stats.nba.com/game/0021600001/playbyplay/
 }

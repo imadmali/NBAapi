@@ -16,7 +16,8 @@ make_url(datatype = NULL, SeasonType = "", LeagueID = "", Season = "",
 \arguments{
 \item{datatype}{One of \code{"shotchartdetail"}, ...}
 
-\item{SeasonType}{One of \code{"Regular+Season"}, \code{"Pre+Season"},\code{"Playoffs"}, or \code{"All+Star"}.}
+\item{SeasonType}{One of \code{"Regular+Season"},
+\code{"Pre+Season"},\code{"Playoffs"}, or \code{"All+Star"}.}
 
 \item{LeagueID}{One of \code{"00"} (NBA) or \code{"01"} (ABA).}
 
@@ -44,7 +45,8 @@ make_url(datatype = NULL, SeasonType = "", LeagueID = "", Season = "",
 
 \item{Location}{TBD.}
 
-\item{Month}{One of \code{"0"} (all months), \code{"1"} to \code{"7"} (regular season), or \code{"8"}/\code{"9"} (playoffs).}
+\item{Month}{One of \code{"0"} (all months), \code{"1"} to \code{"7"}
+(regular season), or \code{"8"}/\code{"9"} (playoffs).}
 
 \item{OpponentTeamID}{TBD.}
 

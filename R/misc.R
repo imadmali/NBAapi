@@ -101,3 +101,37 @@ resize_hexes <- function(hex_grid) {
   return(resized_hexes)
 }
 
+hex_legend <- function(variable, colorful, scale = TRUE) {
+  hex_grid <- nba:::half_court_hex(cellsize = 15)
+  # legend
+  coords <- coordinates(hex_grid)
+  hex_origin <- sweep(slot(slot(hex_grid@polygons[[1]], "Polygons")[[1]], "coords"), 2, abs(coords[1,]), `+`)
+  # size legend
+  if (scale) {
+    slot(slot(hex_grid@polygons[[44]], "Polygons")[[1]], "coords") <-
+      nba:::new_hex(hex_origin, coords[44,], 0.5)
+    plot(hex_grid[44,], col = "grey", border = NA, add = TRUE)
+    plot(hex_grid[5,], col = "grey", border = NA, add = TRUE)
+    text(coords[44,1], coords[44,2], "Low", pos = 2, cex = 0.5, col = "#808080")
+    text(coords[5,1], coords[5,2], "High", pos = 4, cex = 0.5, col = "#808080")
+  }
+  # color legend
+  col_leg <- c(30,31,32,33,34)
+  for (item in col_leg) {
+    slot(slot(hex_grid@polygons[[item]], "Polygons")[[1]], "coords") <-
+      nba:::new_hex(hex_origin, coords[item,], 0.9)
+  }
+  plot(hex_grid[30,], col = colorful[1], border = NA, add = TRUE)
+  plot(hex_grid[31,], col = colorful[3], border = NA, add = TRUE)
+  plot(hex_grid[32,], col = colorful[4], border = NA, add = TRUE)
+  plot(hex_grid[33,], col = colorful[5], border = NA, add = TRUE)
+  plot(hex_grid[34,], col = colorful[7], border = NA, add = TRUE)
+  if (variable != "FGPvLeague") {
+    text(coords[30,1], coords[30,2], "Low", pos = 2, cex = 0.5, col = "#808080")
+    text(coords[34,1], coords[34,2], "High", pos = 4, cex = 0.5, col = "#808080")
+  }
+  else {
+    text(coords[30,1], coords[30,2], "Below\nAverage", pos = 2, cex = 0.5, col = "#808080")
+    text(coords[34,1], coords[34,2], "Above\nAverage", pos = 4, cex = 0.5, col = "#808080")
+  }
+}

@@ -3,7 +3,8 @@
 #' Construct an NBA URL given various API arguments.
 #'
 #' @param datatype One of \code{"shotchartdetail"}, ...
-#' @param SeasonType One of \code{"Regular+Season"}, \code{"Pre+Season"},\code{"Playoffs"}, or \code{"All+Star"}.
+#' @param SeasonType One of \code{"Regular+Season"},
+#'   \code{"Pre+Season"},\code{"Playoffs"}, or \code{"All+Star"}.
 #' @param LeagueID One of \code{"00"} (NBA) or \code{"01"} (ABA).
 #' @param Season Of the format \code{"YYYY-YY"}. For example \code{"2016-17"}.
 #' @param IsOnlyCurrentSeason TBD.
@@ -17,7 +18,8 @@
 #' @param GameSegment TBD.
 #' @param LastNGames TBD.
 #' @param Location TBD.
-#' @param Month One of \code{"0"} (all months), \code{"1"} to \code{"7"} (regular season), or \code{"8"}/\code{"9"} (playoffs).
+#' @param Month One of \code{"0"} (all months), \code{"1"} to \code{"7"}
+#'   (regular season), or \code{"8"}/\code{"9"} (playoffs).
 #' @param OpponentTeamID TBD.
 #' @param Outcome TBD.
 #' @param SeasonSegment TBD.

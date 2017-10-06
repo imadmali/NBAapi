@@ -20,7 +20,8 @@
 draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, ...) {
   if (!add) {
     plot(0, type = "n", xlim = xlim, ylim = ylim,
-         xlab = "x Position (ft)", ylab = "y Position (ft)",
+         # xlab = "x Position (ft)", ylab = "y Position (ft)",
+         xlab = "", ylab = "",
          xaxs = "i", yaxs = "i", xaxt = "n", yaxt = "n", bty = "n", ...)
   }
 
@@ -65,9 +66,9 @@ draw_halfcourt <- function(xlim = c(-300,300), ylim = c(-100,500), add = FALSE, 
 #' @export
 
 half_court_raster <- function() {
-  rl <- raster::raster(extent(matrix( c(-300, -100, 300, 500), nrow=2)), nrow=100, ncol=100,
+  rl <- raster::raster(raster::extent(matrix( c(-300, -100, 300, 500), nrow=2)), nrow=100, ncol=100,
                        crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
-  rl[] <- 1:ncell(rl)
+  rl[] <- 1:raster::ncell(rl)
   # convert to spatialPolygonsDataFrame
   sp_pix <- as(rl, "SpatialPixelsDataFrame")
   sp_pol <- as(sp_pix, "SpatialPolygonsDataFrame")
@@ -138,3 +139,86 @@ merge_shot_data <- function(shpfile, shot_df, hex = FALSE) {
   return(shpfile)
 }
 
+#' Plot Hexagon Shot Chart
+#'
+#'
+#' Plot hexagon shot chart for a player or set of players.
+#'
+#' @param dat Data frame object returned from {\link[nba]{get_shotchart}}.
+#' @param player Player name string or vector of player name strings.
+#' @param variable One of \code{"FGP"} or \code{"FGPvLeague"} to color code the
+#'   hexagons according to player field goal percentage or the difference
+#'   between player field goal percentage and the overall league, respectively.
+#' @param cellsize Number of hexagon cells to construct along the x dimension. A
+#'   larger value results in a finer lattice.
+#' @param scale Logical. If set to \code{TRUE} then the hexagons are scaled
+#'   according to shot frequency.
+#' @param ... Additional arguments to pass to {\link[dplyr]{filter}}.
+#'
+#' @return Hexagons overlayed on a plot. Note that you need to run the function
+#'   {\link[nba]{draw_halfcourt}} in order to plot the hexgons on the
+#'   appropriate court.
+#'
+#' @examples
+#' # plot shots by LeBron James in 2016-17
+#' draw_halfcourt()
+#' plot_hexes(shots_1617, player = "LeBron James", variable = "FGPvLeague",
+#'            scale = T, cellsize = 15,
+#'            LOC_Y <= 500)
+#'
+#' # omit the restricted zone
+#' draw_halfcourt()
+#' plot_hexes(shots_1617, player = "LeBron James", variable = "FGPvLeague",
+#'            LOC_Y <= 500, SHOT_ZONE_BASIC != "Restricted Area")
+#'
+#'
+#' @export
+#'
+
+plot_hexes <- function(dat, player, ..., variable = "FGP", cellsize = 15, scale = TRUE) {
+  col_breaks <- 7
+  dat_filt <- filter(dat, PLAYER_NAME %in% player, ...)
+  dat_leagueomit <- filter(shots_1617, !PLAYER_NAME %in% player, ...)
+  hex_grid <- nba:::half_court_hex(cellsize = cellsize)
+  hex_grid_league <- hex_grid
+
+  hex_grid <- nba:::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
+  if (variable == "FGPvLeague") {
+    hex_grid_league <- nba:::merge_shot_data(hex_grid_league, dat_leagueomit, hex = TRUE)
+    hex_grid@data$FGPvLeague <- hex_grid@data$FGP - hex_grid_league@data$FGP
+  }
+
+  indx <- which(variable == colnames(hex_grid@data))
+
+  if (variable == "FGPvLeague") {
+    # breaks <- seq(min(hex_grid@data[,indx], na.rm = TRUE), max(hex_grid@data[,indx], na.rm = TRUE), length.out = col_breaks)
+    breaks <- seq(-1, 1, length.out = col_breaks)
+  }
+  else {
+    # breaks <- seq(0, max(hex_grid@data[,indx], na.rm = TRUE), length.out = col_breaks)
+    breaks <- seq(0, 1, length.out = col_breaks)
+  }
+
+  colorful <- c("#236e96", "#15b2d3", "#5abccc", "#ffbe42", "#ff7f00", "#f4543b", "#f4143b")
+  # colorful_sel <- colorRampPalette(colorful)(col_breaks)
+  colcode <- colorful[findInterval(hex_grid@data[,indx], breaks)]
+
+  # scale (if applicable) and plot
+  if (scale) {
+    resized_hexes <- nba:::resize_hexes(hex_grid)
+    plot(resized_hexes, col = colcode, border = NA, add = TRUE)
+  }
+  else {
+    plot(hex_grid, col = colcode, border = NA, add = TRUE)
+  }
+
+  # include legend
+  nba:::hex_legend(variable = variable, colorful = colorful, scale = scale)
+  # title
+  text(-300, 475, player, pos = 4, cex = 1.5)
+  # subtitle
+  if (variable == "FGP")
+    text(-300, 450, "Shot Frequency and Success Rate", pos = 4, cex = 0.8)
+  else
+    text(-300, 450, "Shot Frequency and Performance Against Average", pos = 4, cex = 0.8)
+}
