@@ -1,4 +1,4 @@
-Package: nba
+Package: NBAapi
 Title: Access the NBA API.
 Version: 1.0
 Authors@R: person("Imad", "Ali", email = "imad.ali@columbia.edu", role = c("aut", "cre"))
@@ -8,7 +8,8 @@ Depends:
   rjson (>= 0.2.15),
   dplyr (>= 0.7.2),
   ggplot2 (>= 2.2.1),
-  sp (>= 1.2.5)
+  sp (>= 1.2.5),
+  raster (>= 2.5.8)
 Suggests:
     roxygen2,
     testthat (>= 1.0.2)

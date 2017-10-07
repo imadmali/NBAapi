@@ -24,7 +24,7 @@ can be used in spatial modeling.
 # create a half court raster SpatialPolygonsDataFrame object
 sp_pol <- half_court_raster()
 # merge shot chart data with the spatial polygon (grid)
-sp_pol <- merge_shot_data(sp_pol, nba::shots_cavs)
+sp_pol <- merge_shot_data(sp_pol, NBAapi::shots_cavs)
 # plot the result
 ## first deal with color
 colors <- c("white", "black")

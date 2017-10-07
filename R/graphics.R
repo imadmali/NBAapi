@@ -91,7 +91,7 @@ half_court_raster <- function() {
 #' # create a half court raster SpatialPolygonsDataFrame object
 #' sp_pol <- half_court_raster()
 #' # merge shot chart data with the spatial polygon (grid)
-#' sp_pol <- merge_shot_data(sp_pol, nba::shots_cavs)
+#' sp_pol <- merge_shot_data(sp_pol, NBAapi::shots_cavs)
 #' # plot the result
 #' ## first deal with color
 #' colors <- c("white", "black")
@@ -179,12 +179,12 @@ plot_hexes <- function(dat, player, ..., variable = "FGP", cellsize = 15, scale 
   col_breaks <- 7
   dat_filt <- filter(dat, PLAYER_NAME %in% player, ...)
   dat_leagueomit <- filter(shots_1617, !PLAYER_NAME %in% player, ...)
-  hex_grid <- nba:::half_court_hex(cellsize = cellsize)
+  hex_grid <- NBAapi:::half_court_hex(cellsize = cellsize)
   hex_grid_league <- hex_grid
 
-  hex_grid <- nba:::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
+  hex_grid <- NBAapi:::merge_shot_data(hex_grid, dat_filt, hex = TRUE)
   if (variable == "FGPvLeague") {
-    hex_grid_league <- nba:::merge_shot_data(hex_grid_league, dat_leagueomit, hex = TRUE)
+    hex_grid_league <- NBAapi:::merge_shot_data(hex_grid_league, dat_leagueomit, hex = TRUE)
     hex_grid@data$FGPvLeague <- hex_grid@data$FGP - hex_grid_league@data$FGP
   }
 
@@ -205,7 +205,7 @@ plot_hexes <- function(dat, player, ..., variable = "FGP", cellsize = 15, scale 
 
   # scale (if applicable) and plot
   if (scale) {
-    resized_hexes <- nba:::resize_hexes(hex_grid)
+    resized_hexes <- NBAapi:::resize_hexes(hex_grid)
     plot(resized_hexes, col = colcode, border = NA, add = TRUE)
   }
   else {
@@ -213,7 +213,7 @@ plot_hexes <- function(dat, player, ..., variable = "FGP", cellsize = 15, scale 
   }
 
   # include legend
-  nba:::hex_legend(variable = variable, colorful = colorful, scale = scale)
+  NBAapi:::hex_legend(variable = variable, colorful = colorful, scale = scale)
   # title
   text(-300, 475, player, pos = 4, cex = 1.5)
   # subtitle

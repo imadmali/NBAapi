@@ -102,14 +102,14 @@ resize_hexes <- function(hex_grid) {
 }
 
 hex_legend <- function(variable, colorful, scale = TRUE) {
-  hex_grid <- nba:::half_court_hex(cellsize = 15)
+  hex_grid <- NBAapi:::half_court_hex(cellsize = 15)
   # legend
   coords <- coordinates(hex_grid)
   hex_origin <- sweep(slot(slot(hex_grid@polygons[[1]], "Polygons")[[1]], "coords"), 2, abs(coords[1,]), `+`)
   # size legend
   if (scale) {
     slot(slot(hex_grid@polygons[[44]], "Polygons")[[1]], "coords") <-
-      nba:::new_hex(hex_origin, coords[44,], 0.5)
+      NBAapi:::new_hex(hex_origin, coords[44,], 0.5)
     plot(hex_grid[44,], col = "grey", border = NA, add = TRUE)
     plot(hex_grid[5,], col = "grey", border = NA, add = TRUE)
     text(coords[44,1], coords[44,2], "Low", pos = 2, cex = 0.5, col = "#808080")
@@ -119,7 +119,7 @@ hex_legend <- function(variable, colorful, scale = TRUE) {
   col_leg <- c(30,31,32,33,34)
   for (item in col_leg) {
     slot(slot(hex_grid@polygons[[item]], "Polygons")[[1]], "coords") <-
-      nba:::new_hex(hex_origin, coords[item,], 0.9)
+      NBAapi:::new_hex(hex_origin, coords[item,], 0.9)
   }
   plot(hex_grid[30,], col = colorful[1], border = NA, add = TRUE)
   plot(hex_grid[31,], col = colorful[3], border = NA, add = TRUE)
