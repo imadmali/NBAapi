@@ -257,20 +257,3 @@ plot_hexes(shots_1617, player = "Stephen Curry", variable = "FGPvLeague",
            LOC_Y <= 500)
 dev.off()
 
-par(bg = "#f5f5f2")
-draw_halfcourt()
-plot_hexes(dat, player = "Stephen Curry", variable = "FGPvLeague",
-           scale = T, col_breaks = 7, cellsize = 15,
-           LOC_Y <= 500)
-
-plot_shotchart <- function() {}
-
-# scatter plot
-par(bg = "#f5f5f2")
-draw_halfcourt()
-points(filter(dat_filt, EVENT_TYPE == "Missed Shot")$LOC_X, filter(dat_filt, EVENT_TYPE == "Missed Shot")$LOC_Y, col = "#33668850", pch = 3)
-points(filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_X, filter(dat_filt, EVENT_TYPE == "Made Shot")$LOC_Y, col = "#FF668850", pch = 3)
-
-
-# draw a hexagon
-c(xleft, xbottom, xright, ytop)
