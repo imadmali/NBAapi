@@ -3,6 +3,7 @@
 export(draw_halfcourt)
 export(game_id)
 export(get_boxscorescoringv2)
+export(get_boxscoresummaryv2)
 export(get_boxscoretraditionalv2)
 export(get_pbp)
 export(get_pbp2)

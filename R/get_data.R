@@ -395,3 +395,29 @@ get_boxscorescoringv2 <- function(GameID = "",
 
   return(out)
 }
+
+
+#' Get Boxscore Summary (V2)
+#' @param GameID See \code{\link[nba]{make_url}}.
+#' @return A list containing data frames containing team/player/arena
+#'   information for a given game.
+#'
+#' @examples
+#' get_boxscoresummaryv2(GameID = "0021300028")
+#'
+#' @export
+
+get_boxscoresummaryv2 <- function(GameID = "", ...) {
+
+  url_str <- make_url(datatype = "boxscoresummaryv2",
+                      GameID = GameID, ...)
+
+  raw_game <- rjson::fromJSON(file = url_str)
+
+  out <- list()
+  for (i in 1:length(raw_game$resultSets)) {
+    out[[i]] <- json2df(raw_game, index = i)
+  }
+
+  return(out)
+}
